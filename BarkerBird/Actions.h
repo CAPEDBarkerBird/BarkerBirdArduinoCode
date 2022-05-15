@@ -8,22 +8,25 @@
 const int BEAK_PIN = 13;
 const int NECK_VERTICAL_PIN = 10;
 const int NECK_HORIZONTAL_PIN = 9;
-const int BAS_DIRECTION_PIN = 2;
-const int BAS_STEP_PIN = 3;
+const int FLAP_PIN = 8;
+const int BAS_DIRECTION_PIN = 5;
+const int BAS_STEP_PIN = 4;
 
 
 const int BEAK_PIN_INTERCEPT = 1029;
+const int FLAP_INTERCEPT = 590;
 const int NECK_VERTICAL_INTERCEPT = 613;
 const int NECK_HORIZONTAL_INTERCEPT = 1094;
 
-const int BEAK_PIN_SLOP = -1.97;
-const int NECK_VERTICAL_SLOP = 15.87;
-const int NECK_HORIZONTAL_SLOP = 13.25;
+const double BEAK_PIN_SLOP = -1.97;
+const double FLAP_SLOP = 7.2;
+const double NECK_VERTICAL_SLOP = 15.87;
+const double NECK_HORIZONTAL_SLOP = 13.25;
 
 const int BEAKdefault = 1500;
+const int FLAPdefault = 590;
 const int NECK_HORIZONTALdefault = 1500;
 const int NECK_VERTICALdefault = 1500;
-const int FLAPdefault = 1500;
 const int R_WING_EXTENDdefault = 1500;
 const int BASEdefault = 675;
 
@@ -126,7 +129,7 @@ class AudioAction : public Action{
      void doAction(int track, int volume){
 
           myPlayer.volume(volume);  //Set volume value. From 0 to 30
-          myPlayer.play(track);  //Play the mp3
+          myPlayer.playMp3Folder(track);  //Play the mp3
     }
 
     int isDone(){
@@ -148,9 +151,16 @@ class StepperAction : public Action{
     
 
     void doAction(int Steps, int Speed){
-
+         
+         
+         if(Steps > 100){ Steps = 100; }
+         if(Steps < -100) { Steps = -100; }
+        
+          Steps = Steps*3;
+          
           myStepper.setMaxSpeed(Speed);
          // myStepper.setAcceleration(Speed/2);
+          Serial.println(Steps);
           myStepper.moveTo(Steps); 
           
     }

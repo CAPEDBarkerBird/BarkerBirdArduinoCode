@@ -34,24 +34,19 @@ struct Animation
 
 Animation Actions[] = {
 
- {100,   NECK_HORIZONTAL, 50, 20},
- {0,     NECK_VERTICAL, 50, 20},
- // {0,     BEAK, 50, 20},
+  {100,   NECK_HORIZONTAL, 50, 20},
+  {0,     NECK_VERTICAL, 50, 20},
+  {1000,  SPEAK, 1, 30},
   {1000,  NECK_VERTICAL, 25, 25},
-  {200,   NECK_HORIZONTAL, 25, 30},
-  {1000,  NECK_HORIZONTAL, 50, 40},
-  {0,     NECK_VERTICAL, 50, 30},
-  {1000,  NECK_HORIZONTAL, 25, 30},
-  {0,     NECK_VERTICAL, 80, 30},
-  {1000,  NECK_HORIZONTAL, 50, 30},
-  {0,     NECK_VERTICAL, 90, 25},
-  {100,   NECK_HORIZONTAL, 50, 30},
-  {1000,  NECK_HORIZONTAL, 10, 40},
-  {1000,  SPEAK, 0, 30},
-  {0,     NECK_VERTICAL, 25, 30},
-  {1500,  NECK_HORIZONTAL, 50, 40},
-  {0,     NECK_VERTICAL, 50, 30}
- // {1000,  BEAK, 0, 30}
+  {1000,  BASE, 100, 100},
+  {10000,  BASE, -80, 100}
+//  {0,     NECK_VERTICAL, 90, 25},
+//  {100,   NECK_HORIZONTAL, 50, 30},
+//  {1000,  NECK_HORIZONTAL, 10, 40},
+//  {0,     NECK_VERTICAL, 25, 30},
+//  {1500,  NECK_HORIZONTAL, 50, 40},
+//  {0,     NECK_VERTICAL, 50, 30}
+
  
 };
 
@@ -69,12 +64,13 @@ void setup()
 {
   Serial.begin(115200);
  
-  SPEAK->init(&Serial1,9600);
+  SPEAK->init(&Serial2,9600);
   BEAK->init(BEAK_PIN , BEAK_PIN_SLOP, BEAK_PIN_INTERCEPT, BEAKdefault); 
   NECK_VERTICAL->init(NECK_VERTICAL_PIN,NECK_VERTICAL_SLOP, NECK_VERTICAL_INTERCEPT, NECK_VERTICALdefault);
   NECK_HORIZONTAL->init(NECK_HORIZONTAL_PIN, NECK_HORIZONTAL_SLOP, NECK_HORIZONTAL_INTERCEPT, NECK_HORIZONTALdefault);
+  FLAP->init(FLAP_PIN,FLAP_SLOP, FLAP_INTERCEPT,FLAPdefault );
   
- // BASE->init(BAS_DIRECTION_PIN, BAS_STEP_PIN, BASEdefault);
+  BASE->init(BAS_DIRECTION_PIN, BAS_STEP_PIN, BASEdefault);
   
   delay (2000);
   StartTime = millis();
@@ -87,34 +83,36 @@ int SpeachVal;    // variable to read the value from the analog pin
 
 //used to see when all the actions are done
 int check_done(){
-  return( //FLAP->isDone()            ||
+  return( //FLAP->isDone()          ||
           NECK_HORIZONTAL->isDone() ||
+           BASE->isDone()           ||
+          //SPEAK->isDone()           ||
           NECK_VERTICAL->isDone() );
          // R_WING_EXTEND->isDone()   || 
          // L_WING_EXTEND->isDone()   ||
          // SPEAK->isDone()           ||
-         // BASE->isDone() );
+         //;
 }
 
 void speach(){
     //if the MP3 Player is not assleep the set BEAK to position based on amplatude else set to the defalt position
-    if(SPEAK->isDone()){
+   // if(SPEAK->isDone()){
   
       SpeachVal = analogRead(AudioFeedBack);              // reads the value of the potentiometer (value between 0 and 1023)
-      Serial.println(SpeachVal);
-      SpeachVal = map(SpeachVal, 385, 400, 0, 100);       // Should go away after testing scale it to use it with the servo (value between 0 and 180)
+      //Serial.println(SpeachVal);
+      SpeachVal = map(SpeachVal, 0, 1023, 0, 100);       // Should go away after testing scale it to use it with the servo (value between 0 and 180)
       BEAK->doAction(SpeachVal, 25);
-    } else {
+  //  } else {
   
-      BEAK->doAction(BEAKdefault, 25);
-    }
+    //  BEAK->doAction(BEAKdefault, 25);
+   // }
 }
 
 //the main loop this happens as long as the bird is activated
 void loop() 
 {
 
-   // speach();
+   speach();
 
    
     if(index < numberOfActions){
