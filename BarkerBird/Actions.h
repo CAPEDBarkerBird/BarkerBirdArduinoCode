@@ -11,24 +11,32 @@ const int NECK_HORIZONTAL_PIN = 9;
 const int FLAP_PIN = 8;
 const int BAS_DIRECTION_PIN = 5;
 const int BAS_STEP_PIN = 4;
+const int R_WING_EXTEND_PIN = 11;
+const int L_WING_EXTEND_PIN = 12;
 
 
 const int BEAK_PIN_INTERCEPT = 1029;
-const int FLAP_INTERCEPT = 590;
+const int FLAP_INTERCEPT = 1500;
 const int NECK_VERTICAL_INTERCEPT = 613;
 const int NECK_HORIZONTAL_INTERCEPT = 1094;
+const int R_WING_EXTEND_INTERCEPT = 1590;
+const int L_WING_EXTEND_INTERCEPT = 1400;
 
 const double BEAK_PIN_SLOP = -1.97;
-const double FLAP_SLOP = 7.2;
+const double FLAP_SLOP = 5;
 const double NECK_VERTICAL_SLOP = 15.87;
 const double NECK_HORIZONTAL_SLOP = 13.25;
+const double R_WING_EXTEND_SLOP = 5;
+const double L_WING_EXTEND_SLOP = -6;
 
 const int BEAKdefault = 1500;
-const int FLAPdefault = 590;
+const int FLAPdefault = 1500;
 const int NECK_HORIZONTALdefault = 1500;
 const int NECK_VERTICALdefault = 1500;
 const int R_WING_EXTENDdefault = 1500;
 const int BASEdefault = 675;
+const int R_WING_EXTEND_DEFALT = 1590;
+const int L_WING_EXTEND_DEFALT = 1400;
 
 class Action {
    public :
