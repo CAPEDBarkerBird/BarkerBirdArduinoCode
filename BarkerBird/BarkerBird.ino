@@ -36,19 +36,25 @@ Animation Actions[] = {
 
   {100,   NECK_HORIZONTAL, 50, 20},
   {0,     NECK_VERTICAL, 50, 20},
-  {1000,  SPEAK, 1, 2},
+  {1000,  SPEAK, 1, 30},
+  {1000,  BASE, -80, 100},
   {1000,  NECK_VERTICAL, 25, 25},
   {1000,  FLAP, 100, 25},
+  {1000,  L_WING_EXTEND, 100, 25},
+  {0,  R_WING_EXTEND, 100, 25},
+
   {1000,  BASE, 100, 100},
-  {10000,  BASE, -80, 100},
+
   {0,     NECK_VERTICAL, 90, 25},
   {100,   NECK_HORIZONTAL, 50, 30},
   {1000,  NECK_HORIZONTAL, 10, 40},
+  {1000,  L_WING_EXTEND, 0, 25},
+  {0,  R_WING_EXTEND, 0, 25},
   {1000,  FLAP, 0, 25},
   {0,     NECK_VERTICAL, 25, 30},
   {1500,  NECK_HORIZONTAL, 50, 40},
-  {0,     NECK_VERTICAL, 50, 30}
-
+  {0,     NECK_VERTICAL, 50, 30},
+  {1000,  BASE, 0, 100}
  
 };
 
@@ -74,7 +80,7 @@ void setup()
   R_WING_EXTEND->init(R_WING_EXTEND_PIN,R_WING_EXTEND_SLOP, R_WING_EXTEND_INTERCEPT,R_WING_EXTEND_DEFALT);
   L_WING_EXTEND->init(L_WING_EXTEND_PIN,L_WING_EXTEND_SLOP, L_WING_EXTEND_INTERCEPT,L_WING_EXTEND_DEFALT);
   
-  BASE->init(BAS_DIRECTION_PIN, BAS_STEP_PIN, BASEdefault);
+ BASE->init(BAS_DIRECTION_PIN, BAS_STEP_PIN, BASEdefault);
   
   delay (2000);
   StartTime = millis();
@@ -87,15 +93,14 @@ int SpeachVal;    // variable to read the value from the analog pin
 
 //used to see when all the actions are done
 int check_done(){
-  return( //FLAP->isDone()          ||
-          NECK_HORIZONTAL->isDone() ||
-           BASE->isDone()           ||
+  return(  FLAP->isDone()             ||
+           NECK_HORIZONTAL->isDone() ||
+           BASE->isDone()             ||
+          NECK_VERTICAL->isDone()   ||
+          R_WING_EXTEND->isDone()   ||
+          L_WING_EXTEND->isDone());
           //SPEAK->isDone()           ||
-          NECK_VERTICAL->isDone() );
-         // R_WING_EXTEND->isDone()   || 
-         // L_WING_EXTEND->isDone()   ||
-         // SPEAK->isDone()           ||
-         //;
+         
 }
 
 void speach(){
@@ -116,7 +121,7 @@ void speach(){
 void loop() 
 {
 
-   speach();
+//   speach();
 
    
     if(index < numberOfActions){
